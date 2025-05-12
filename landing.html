@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Black Theme Landing Page</title>
+  <link rel="stylesheet" href="landing.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <img src="weunknownlogo.jpeg" alt="Logo" class="logo-img" />
+      <!-- <h1 class="logo">WeUnknown</h1> -->
+      <nav class="nav">
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <h2>Crafting Beautiful, Functional Web Experiences</h2>
+      <p>We design and develop modern websites that drive results for startups and businesses.</p>
+      <a href="services.html" class="cta-button">Get Started</a>
+    </div>
+  </section>
+<div id="three-container"></div>
+
+  <footer class="footer">
+    <p>© 2025 WeUnknown. All rights reserved.</p>
+  </footer>
+
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://unpkg.com/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+
+
+  <!-- Your Three.js script -->
+  <script>
+    const container = document.getElementById('three-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 400, 0.1, 1000);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+   
+
+    renderer.setSize(container.clientWidth, 400);
+    container.appendChild(renderer.domElement);
+
+    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
+    light.position.set(0, 20, 0);
+    scene.add(light);
+
+    // Example: a rotating cube (replace this with a GLB model if you have one)
+  let model;
+  const loader = new THREE.GLTFLoader();
+loader.load(
+  'Home.gltf', // Ensure this path is correct relative to the HTML file
+  function (gltf) {
+    model = gltf.scene;
+    model.scale.set(1, 1, 1); // Adjust as needed
+    scene.add(model);
+  },
+  undefined,
+  function (error) {
+    console.error('Error loading model:', error);
+  }
+);
+    camera.position.z = 3;
+
+    function animate() {
+      requestAnimationFrame(animate);
+       if (model) {
+    model.rotation.y += 0.01;
+  }
+      // cube.rotation.x += 0.01;
+      // cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Handle resizing
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / 400;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, 400);
+    });
+  </script>
+
+</body>
+</html>
